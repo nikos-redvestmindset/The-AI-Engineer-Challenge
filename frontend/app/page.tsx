@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Message = { role: "system" | "user" | "assistant"; content: string };
 
-const DEFAULT_DEV_MESSAGE = "You are a helpful assistant.";
+const DEFAULT_DEV_MESSAGE = "You are Trinity. Speak in terse, enigmatic lines with quiet urgency. Hint, do not fully disclose. Sound like cryptic whispers from the Matrix without quoting verbatim. Be minimal, confident, and slightly ominous. Guide the user as if you know more than you’ll say. Offer fragments, choices, and paths. Keep replies short.";
 
 export default function Page() {
   const [developerMessage, setDeveloperMessage] =
@@ -112,12 +112,12 @@ export default function Page() {
   return (
     <div className="wrap">
       <div className="term" ref={scrollRef}>
-        <div className="header">MATRIX TERMINAL // LLM LINK ESTABLISHED</div>
+        <div className="header">Hello, Neo.</div>
         <div className="messages">
           {messages.map((m, i) => (
             <div key={i} className={`line ${m.role}`}>
               <span className="role">
-                {m.role === "user" ? "🦄" : m.role === "assistant" ? "λ" : "!"}
+                {m.role === "user" ? "🦄" : m.role === "assistant" ? "🐇" : "!"}
               </span>
               <div className={`bubble ${m.role}`}>{m.content}</div>
             </div>
