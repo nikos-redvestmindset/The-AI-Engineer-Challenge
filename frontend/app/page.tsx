@@ -7,7 +7,8 @@ type Message = { role: "system" | "user" | "assistant"; content: string };
 const DEFAULT_DEV_MESSAGE = "You are a helpful assistant.";
 
 export default function Page() {
-  const [developerMessage, setDeveloperMessage] = useState<string>(DEFAULT_DEV_MESSAGE);
+  const [developerMessage, setDeveloperMessage] =
+    useState<string>(DEFAULT_DEV_MESSAGE);
   // API key handled server-side now
   const [apiKey, setApiKey] = useState<string>("");
   const [rememberKey, setRememberKey] = useState<boolean>(false);
@@ -35,7 +36,11 @@ export default function Page() {
   const sendMessage = useCallback(async () => {
     if (!input.trim()) return;
     const userMsg: Message = { role: "user", content: input };
-    setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "" }]);
+    setMessages((prev) => [
+      ...prev,
+      userMsg,
+      { role: "assistant", content: "" },
+    ]);
     setInput("");
     setIsStreaming(true);
 
@@ -46,8 +51,8 @@ export default function Page() {
         body: JSON.stringify({
           developer_message: developerMessage,
           user_message: userMsg.content,
-          model
-        })
+          model,
+        }),
       });
 
       if (!res.ok || !res.body) {
@@ -77,7 +82,7 @@ export default function Page() {
     } catch (err: any) {
       setMessages((prev) => [
         ...prev,
-        { role: "system", content: `Error: ${err?.message || String(err)}` }
+        { role: "system", content: `Error: ${err?.message || String(err)}` },
       ]);
     } finally {
       setIsStreaming(false);
@@ -92,12 +97,9 @@ export default function Page() {
     [sendMessage]
   );
 
-  const onToggleRemember = useCallback(
-    (checked: boolean) => {
-      setRememberKey(checked);
-    },
-    []
-  );
+  const onToggleRemember = useCallback((checked: boolean) => {
+    setRememberKey(checked);
+  }, []);
 
   const onApiKeyChange = useCallback((_v: string) => {}, []);
 
@@ -109,12 +111,10 @@ export default function Page() {
           {messages.map((m, i) => (
             <div key={i} className={`line ${m.role}`}>
               <span className="role">{m.role === "user" ? "🦄" : m.role === "assistant" ? "λ" : "!"}</span>
-              <span className="content">{m.content}</span>
+              <div className={`bubble ${m.role}`}>{m.content}</div>
             </div>
           ))}
-          {isStreaming && (
-            <div className="blink">receiving...</div>
-          )}
+          {isStreaming && <div className="blink">receiving...</div>}
         </div>
       </div>
       <form className="controls" onSubmit={onSubmit}>
@@ -146,7 +146,11 @@ export default function Page() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
-          <button className="send" type="submit" disabled={isStreaming || !apiKey || !input.trim()}>
+          <button
+            className="send"
+            type="submit"
+            disabled={isStreaming || !input.trim()}
+          >
             Send
           </button>
         </div>
@@ -154,4 +158,3 @@ export default function Page() {
     </div>
   );
 }
-

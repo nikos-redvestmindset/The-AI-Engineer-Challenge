@@ -9,13 +9,28 @@
 html, body {
   padding: 0;
   margin: 0;
-  background: radial-gradient(ellipse at top, #021, #000 60%);
+  background: #000;
   color: var(--matrix-text);
   height: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 * { box-sizing: border-box; }
+
+.screen { position: relative; min-height: 100vh; overflow: hidden; image-rendering: pixelated; }
+.content { position: relative; z-index: 3; }
+.matrix-rain { position: fixed; inset: 0; z-index: 1; opacity: 0.18; }
+.crt { position: fixed; inset: 0; z-index: 2; pointer-events: none; background:
+  repeating-linear-gradient( to bottom, rgba(0,255,100,0.06) 0px, rgba(0,255,100,0.06) 1px, rgba(0,0,0,0) 2px ),
+  radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.5) 100% );
+  mix-blend-mode: screen;
+  animation: crt-flicker 8s infinite linear;
+}
+
+@keyframes crt-flicker {
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 1; }
+}
 
 .wrap {
   display: flex;
@@ -26,11 +41,12 @@ html, body {
 .term {
   flex: 1;
   border: 1px solid #093;
-  background: rgba(0, 20, 0, 0.85);
+  background: rgba(0, 20, 0, 0.75);
   margin: 16px;
   padding: 12px;
   overflow: auto;
   box-shadow: 0 0 20px rgba(0,255,100,0.1) inset, 0 0 8px rgba(0,255,100,0.2);
+  backdrop-filter: blur(0.5px) saturate(120%);
 }
 
 .header {
@@ -40,12 +56,22 @@ html, body {
   opacity: 0.8;
 }
 
-.messages { display: flex; flex-direction: column; gap: 6px; }
+.messages { display: flex; flex-direction: column; gap: 10px; }
 
-.line { white-space: pre-wrap; word-break: break-word; }
-.line .role { color: var(--matrix-accent); margin-right: 8px; }
-.line.system .role { color: #f66; }
+.line { display: flex; align-items: flex-start; gap: 8px; }
+.line.user { justify-content: flex-end; }
+.line .role { color: var(--matrix-accent); margin-top: 2px; }
+.line.user .role { order: 2; margin-left: 8px; }
 .line.assistant .role { color: var(--matrix-green); }
+.bubble { max-width: 80%; padding: 8px 10px; border: 1px solid #074; background: #001400; border-radius: 4px; white-space: pre-wrap; word-break: break-word; box-shadow: 0 0 6px rgba(0,255,100,0.08) inset; animation: text-flicker 2.2s infinite ease-in-out alternate; }
+.bubble.user { background: #002000; border-color: #095; }
+.bubble.assistant { background: #001400; border-color: #074; }
+
+@keyframes text-flicker {
+  0% { text-shadow: 0 0 2px #0f0; opacity: 0.92; }
+  50% { text-shadow: 0 0 6px #0f0, 0 0 10px #0a0; opacity: 1; }
+  100% { text-shadow: 0 0 3px #0f0; opacity: 0.95; }
+}
 .blink { color: var(--matrix-dim); animation: pulse 1s infinite; margin-top: 6px; }
 
 @keyframes pulse { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
@@ -80,6 +106,8 @@ html, body {
   padding: 8px 16px;
   border-radius: 2px;
   cursor: pointer;
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
 }
 .send:disabled { opacity: 0.5; cursor: not-allowed; }
+.send:not(:disabled):active { transform: translateY(1px); box-shadow: 0 0 10px rgba(0,255,100,0.2) inset; }
 

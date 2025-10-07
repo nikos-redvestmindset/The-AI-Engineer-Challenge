@@ -1,4 +1,5 @@
 import "./globals.css";
+import MatrixRain from "./components/MatrixRain";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +10,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="screen">
+          <MatrixRain />
+          <div className="crt" />
+          <div className="content">{children}</div>
+        </div>
+      </body>
     </html>
   );
 }
