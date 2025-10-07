@@ -6,7 +6,11 @@
         "src": "api/app.py",
         "use": "@vercel/python",
         "config": {
-          "runtime": "python3.11"
+          "runtime": "python3.12",
+          "excludeFiles": [
+            "pyproject.toml",
+            "uv.lock"
+          ]
         }
       }
     ],
