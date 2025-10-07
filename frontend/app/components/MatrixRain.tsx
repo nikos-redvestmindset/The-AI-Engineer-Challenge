@@ -24,7 +24,7 @@ export default function MatrixRain() {
     };
     window.addEventListener("resize", resize);
 
-    const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzカタカナ日ﾊﾐﾋｰｼﾄﾘｻﾜﾀｹ｢｣=*+-<>");
+    const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzカタカナ日ﾊﾐﾋｰｼﾄﾘｻﾜﾀｹ｢｣=*+-<>";
     const chars = characters.split("");
 
     const draw = () => {
