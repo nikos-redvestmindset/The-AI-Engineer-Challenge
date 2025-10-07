@@ -1,0 +1,85 @@
+:root {
+  --matrix-bg: #000;
+  --matrix-green: #00ff95;
+  --matrix-dim: #0f3;
+  --matrix-text: #b8ffcc;
+  --matrix-accent: #39ff14;
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  background: radial-gradient(ellipse at top, #021, #000 60%);
+  color: var(--matrix-text);
+  height: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+* { box-sizing: border-box; }
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.term {
+  flex: 1;
+  border: 1px solid #093;
+  background: rgba(0, 20, 0, 0.85);
+  margin: 16px;
+  padding: 12px;
+  overflow: auto;
+  box-shadow: 0 0 20px rgba(0,255,100,0.1) inset, 0 0 8px rgba(0,255,100,0.2);
+}
+
+.header {
+  color: var(--matrix-green);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.messages { display: flex; flex-direction: column; gap: 6px; }
+
+.line { white-space: pre-wrap; word-break: break-word; }
+.line .role { color: var(--matrix-accent); margin-right: 8px; }
+.line.system .role { color: #f66; }
+.line.assistant .role { color: var(--matrix-green); }
+.blink { color: var(--matrix-dim); animation: pulse 1s infinite; margin-top: 6px; }
+
+@keyframes pulse { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+
+.controls {
+  border-top: 1px solid #073;
+  padding: 8px 16px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row { display: grid; grid-template-columns: 90px 1fr auto; gap: 10px; align-items: center; }
+.row .lbl { color: var(--matrix-green); }
+.row .prompt { color: var(--matrix-accent); text-align: center; }
+.row .chk { color: var(--matrix-text); display: inline-flex; gap: 6px; align-items: center; }
+
+.in {
+  background: #001b00;
+  color: var(--matrix-text);
+  border: 1px solid #074;
+  padding: 8px 10px;
+  outline: none;
+  border-radius: 2px;
+}
+.in:focus { border-color: var(--matrix-green); box-shadow: 0 0 6px rgba(0,255,100,0.2); }
+
+.send {
+  background: #003300;
+  color: var(--matrix-green);
+  border: 1px solid #095;
+  padding: 8px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.send:disabled { opacity: 0.5; cursor: not-allowed; }
+
