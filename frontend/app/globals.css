@@ -111,3 +111,11 @@ html, body {
 .send:disabled { opacity: 0.5; cursor: not-allowed; }
 .send:not(:disabled):active { transform: translateY(1px); box-shadow: 0 0 10px rgba(0,255,100,0.2) inset; }
 
+/* CLI-style input at bottom */
+.cli { border-top: 1px solid #073; padding: 10px 16px 24px 16px; position: sticky; bottom: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px); }
+.cli-line { display: flex; align-items: center; gap: 10px; color: var(--matrix-text); font-size: 15px; }
+.cli-typed { white-space: pre-wrap; word-break: break-word; }
+.cli-cursor { display: inline-block; width: 1.2em; text-align: center; color: var(--matrix-accent); animation: cursor-blink 1s steps(1) infinite; }
+@keyframes cursor-blink { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+.cli-hidden-input { position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none; }
+

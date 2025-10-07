@@ -17,6 +17,7 @@ export default function Page() {
   const [input, setInput] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const hiddenInputRef = useRef<HTMLInputElement | null>(null);
 
   // No longer loading or storing API key on the client
 
@@ -24,6 +25,11 @@ export default function Page() {
     if (!scrollRef.current) return;
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages, isStreaming]);
+
+  useEffect(() => {
+    // focus the hidden input so typing goes to CLI line
+    hiddenInputRef.current?.focus();
+  }, []);
 
   const apiBase = useMemo(() => {
     // On Vercel, the backend is mounted at /api via vercel.json routing
@@ -87,7 +93,7 @@ export default function Page() {
     } finally {
       setIsStreaming(false);
     }
-  }, [input, apiKey, developerMessage, model, apiBase]);
+  }, [input, developerMessage, model, apiBase]);
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -119,44 +125,28 @@ export default function Page() {
           {isStreaming && <div className="blink">receiving...</div>}
         </div>
       </div>
-      <form className="controls" onSubmit={onSubmit}>
-        {/* API key input removed; backend uses server-side key */}
-        <div className="row">
-          <label className="lbl">System</label>
-          <input
-            className="in"
-            type="text"
-            value={developerMessage}
-            onChange={(e) => setDeveloperMessage(e.target.value)}
-          />
+      <div className="cli" onClick={() => hiddenInputRef.current?.focus()}>
+        <div className="cli-line">
+          <span className="cli-typed">{input}</span>
+          <span className="cli-cursor" aria-hidden>
+            🦄
+          </span>
         </div>
-        <div className="row">
-          <label className="lbl">Model</label>
-          <input
-            className="in"
-            type="text"
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-          />
-        </div>
-        <div className="row">
-          <label className="prompt">🦄</label>
-          <input
-            className="in"
-            type="text"
-            placeholder="Enter your message and hit Enter"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <button
-            className="send"
-            type="submit"
-            disabled={isStreaming || !input.trim()}
-          >
-            Send
-          </button>
-        </div>
-      </form>
+        <input
+          ref={hiddenInputRef}
+          className="cli-hidden-input"
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              void sendMessage();
+            }
+          }}
+          aria-label="Type your message"
+        />
+      </div>
     </div>
   );
 }
