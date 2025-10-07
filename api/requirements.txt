@@ -1,0 +1,15 @@
+# Minimal dependencies for the FastAPI backend deployed on Vercel.
+# Keep this list lean to ensure serverless cold-starts are fast and vendor size stays small.
+
+fastapi>=0.115.0,<1.0.0
+uvicorn[standard]>=0.34.0,<1.0.0
+python-multipart>=0.0.18,<0.1.0
+
+# Pydantic v2 requires the Rust-based pydantic-core wheel; explicitly include it
+# to avoid cases where it might be skipped and cause runtime import errors.
+pydantic>=2.11.4,<3.0.0
+pydantic-core>=2.23.0,<3.0.0
+
+# New OpenAI SDK used by api/app.py (from openai import OpenAI)
+openai>=1.0.0,<2.0.0
+
