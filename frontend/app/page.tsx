@@ -110,7 +110,9 @@ export default function Page() {
         <div className="messages">
           {messages.map((m, i) => (
             <div key={i} className={`line ${m.role}`}>
-              <span className="role">{m.role === "user" ? "🦄" : m.role === "assistant" ? "λ" : "!"}</span>
+              <span className="role">
+                {m.role === "user" ? "🦄" : m.role === "assistant" ? "λ" : "!"}
+              </span>
               <div className={`bubble ${m.role}`}>{m.content}</div>
             </div>
           ))}
