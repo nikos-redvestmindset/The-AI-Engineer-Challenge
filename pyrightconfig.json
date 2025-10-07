@@ -1,0 +1,12 @@
+{
+  // Configure Pyright/Pylance to use the local uv-managed virtual env
+  "$schema": "https://json.schemastore.org/pyrightconfig",
+  "venvPath": ".",
+  "venv": ".venv",
+  "reportMissingImports": false,
+  "pythonVersion": "3.11",
+  "typeCheckingMode": "basic",
+  "include": [
+    "api"
+  ]
+}
