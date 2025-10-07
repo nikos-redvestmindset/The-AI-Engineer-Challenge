@@ -29,7 +29,7 @@ Welcome to the green room. This is a Matrix-themed terminal UI where you can cha
 The Next.js dev server proxies `/api/*` to `http://localhost:8000/api/*` automatically in development.
 
 #### Environment
-No env vars are required for the frontend. You’ll paste your OpenAI API key into the UI (stored locally if you toggle remember).
+No env vars are required for the frontend. The backend now uses `OPENAI_API_KEY` from the server environment; the UI does not accept or store API keys.
 
 #### Deploy on Vercel
 The repo root `vercel.json` is configured to:

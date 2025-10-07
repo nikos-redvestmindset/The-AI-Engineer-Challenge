@@ -8,6 +8,7 @@ const DEFAULT_DEV_MESSAGE = "You are a helpful assistant.";
 
 export default function Page() {
   const [developerMessage, setDeveloperMessage] = useState<string>(DEFAULT_DEV_MESSAGE);
+  // API key handled server-side now
   const [apiKey, setApiKey] = useState<string>("");
   const [rememberKey, setRememberKey] = useState<boolean>(false);
   const [model, setModel] = useState<string>("gpt-4.1-mini");
@@ -16,13 +17,7 @@ export default function Page() {
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("openai_api_key");
-    if (saved) {
-      setApiKey(saved);
-      setRememberKey(true);
-    }
-  }, []);
+  // No longer loading or storing API key on the client
 
   useEffect(() => {
     if (!scrollRef.current) return;
@@ -38,7 +33,7 @@ export default function Page() {
   }, []);
 
   const sendMessage = useCallback(async () => {
-    if (!input.trim() || !apiKey) return;
+    if (!input.trim()) return;
     const userMsg: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "" }]);
     setInput("");
@@ -51,8 +46,7 @@ export default function Page() {
         body: JSON.stringify({
           developer_message: developerMessage,
           user_message: userMsg.content,
-          model,
-          api_key: apiKey
+          model
         })
       });
 
@@ -101,22 +95,11 @@ export default function Page() {
   const onToggleRemember = useCallback(
     (checked: boolean) => {
       setRememberKey(checked);
-      if (!checked) {
-        localStorage.removeItem("openai_api_key");
-      } else if (apiKey) {
-        localStorage.setItem("openai_api_key", apiKey);
-      }
     },
-    [apiKey]
+    []
   );
 
-  const onApiKeyChange = useCallback((v: string) => {
-    setApiKey(v);
-    if (rememberKey) {
-      if (v) localStorage.setItem("openai_api_key", v);
-      else localStorage.removeItem("openai_api_key");
-    }
-  }, [rememberKey]);
+  const onApiKeyChange = useCallback((_v: string) => {}, []);
 
   return (
     <div className="wrap">
@@ -135,25 +118,7 @@ export default function Page() {
         </div>
       </div>
       <form className="controls" onSubmit={onSubmit}>
-        <div className="row">
-          <label className="lbl">API Key</label>
-          <input
-            className="in"
-            type="password"
-            placeholder="sk-..."
-            value={apiKey}
-            onChange={(e) => onApiKeyChange(e.target.value)}
-            required
-          />
-          <label className="chk">
-            <input
-              type="checkbox"
-              checked={rememberKey}
-              onChange={(e) => onToggleRemember(e.target.checked)}
-            />
-            remember
-          </label>
-        </div>
+        {/* API key input removed; backend uses server-side key */}
         <div className="row">
           <label className="lbl">System</label>
           <input

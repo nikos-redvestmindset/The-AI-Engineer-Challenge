@@ -52,8 +52,7 @@ Both commands assume the `OPENAI_API_KEY` environment variable is set in the she
 {
     "developer_message": "string",
     "user_message": "string",
-    "model": "gpt-4.1-mini",  // optional
-    "api_key": "your-openai-api-key"
+    "model": "gpt-4.1-mini"  
 }
 ```
 - **Response**: Streaming text response
